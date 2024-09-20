@@ -1,0 +1,59 @@
+import { useState } from "react";
+
+const UploadComponent = ({
+	saveBase64,
+}: {
+	saveBase64: (base64: string) => void;
+}) => {
+	const [fileName, setFileName] = useState("");
+
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	const handleFileChange = (e: any) => {
+		const file = e.target.files[0];
+
+		if (file) {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+
+			reader.onloadend = () => {
+				setFileName(file.name);
+				saveBase64(reader.result as string);
+			};
+
+			reader.onerror = (error) => {
+				console.error("Error reading file: ", error);
+			};
+		}
+	};
+
+	return (
+		<div className="mt-4 p-y-4 w-full">
+			<h2 className="text-xl font-semibold mb-4">Upload a File</h2>
+			<input
+				type="file"
+				onChange={handleFileChange}
+				className="border border-dashed p-2 w-full h-[100px]"
+			/>
+
+			{/* Display file name */}
+			{fileName && (
+				<p className="mt-4 text-gray-600">Uploaded File: {fileName}</p>
+			)}
+
+			{/* Display Base64 output */}
+			{/* {fileBase64 && (
+				<div className="mt-4">
+					<h3 className="font-bold">Base64 String:</h3>
+					<textarea
+						value={fileBase64}
+						readOnly
+						rows={10}
+						className="w-full p-2 border rounded-md"
+					/>
+				</div>
+			)} */}
+		</div>
+	);
+};
+
+export default UploadComponent;
