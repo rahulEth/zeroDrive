@@ -100,7 +100,99 @@ async function uploadToIpfs(
     chainType,
     date
   });
+  storeToDB(
+    address,
+    resp.result,
+    fileName,
+    encryptedData,
+    dataType,
+    chainType,
+    date
+  );  
 }
+
+async function storeToDB(
+  address,
+  ipfsHash,
+  fileName,
+  encryptedData,
+  dataType,
+  chainType,
+  date
+) {
+  const resp = await setProof(address, ipfsHash[0].path);
+  const txHash = `https://hashscan.io/testnet/transaction/${resp.transactionId}`
+  const db = await connectToDatabase();
+  const collection = db.collection("zerodrive-collection");
+  const result = await collection.insertOne({
+    address,
+    ipfsHash,
+    fileName,
+    encryptedData,
+    dataType,
+    chainType,
+    txHash,
+    date
+  });
+  console.log("document inserted Id ", result.insertedId.toString());
+}
+
+app.get("/api/getEncryptedData", async (req, res) => {
+  // console.log("req.query.appLink ------ ", req.query.appLink, req.query.address)
+  if (!req.query.dataType || !req.query.address) {
+    return res.status(403).send({ message: "dataType or address is missing" });
+  }
+  const db = await connectToDatabase();
+  const collection = db.collection("zerodrive-collection");
+  try {
+    const result = await collection.findOne({
+      appLink: req.query.appLink,
+      address: req.query.address,
+    });
+    if (result) {
+      return res.status(200).send(result);
+    }
+    return res.status(404).send({ message: "no matching credentials found" });
+  } catch (err) {
+    console.log("internal server err ", err);
+    return res.status(500).send({ message: "internal server error" });
+  }
+});
+
+app.get("/api/getEncryptedDataByType", async (req, res) => {
+  console.log("req.query.dataType ------ ", req.query.dataType, req.query.address)
+  if (!req.query.dataType || !req.query.address) {
+    return res.status(403).send({ message: "dataType or address is missing" });
+  }
+  const db = await connectToDatabase();
+  const collection = db.collection("zerodrive-collection");
+  let query = {};
+  if(req.query.dataType.toLowerCase() == 'all'){
+    query = {
+      address: req.query.address,
+    }
+  }else if(req.query.dataType == 'personal' || req.query.dataType == 'education' || req.query.dataType == 'identity' || req.query.dataType == 'health' || req.query.dataType == 'government'){
+    query = {
+      dataType: req.query.dataType,
+      address: req.query.address,
+    }
+  }else{
+    return res.status(403).send({ message: "valid type are personal, education, identity, health, government" });
+  }
+  try {
+    const result = await collection.find(query);
+    if (result) {
+      const finalResult = await result.toArray();
+      JSON.stringify(finalResult, null, 2);
+      return res.status(200).send(finalResult);
+    }
+    return res.status(404).send({ message: "no matching credentials found" });
+  } catch (err) {
+    console.log("internal server err ", err);
+    return res.status(500).send({ message: "internal server error" });
+  }
+});
+
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => {
