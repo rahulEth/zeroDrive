@@ -3,7 +3,7 @@ import { type Document, Table } from "../components/Table";
 import { Search } from "../components/Search";
 import { getDocuments, getEncryptedDataByType } from "../modules/api";
 import { useAccount } from "wagmi";
-import { GetEncryptedDataResponse } from "../interfaces";
+import type { GetEncryptedDataResponse } from "../interfaces";
 
 const DOCUMENT_TYPES = [
 	"personal",
@@ -11,9 +11,11 @@ const DOCUMENT_TYPES = [
 	"health",
 	"government",
 	"identity",
+	"all",
 ];
 
 export const MyDocuments = () => {
+	const [searchString, setSearchString] = useState("");
 	const account = useAccount();
 	const [myDocuments, setMyDocuments] = useState<GetEncryptedDataResponse[]>(
 		[],
@@ -23,6 +25,10 @@ export const MyDocuments = () => {
 
 	const handleSearch = (search: string) => {
 		console.log(search);
+		setSearchString(search);
+		setMyDocuments(
+			myDocuments.filter((doc) => doc.fileName.toLowerCase().includes(search)),
+		);
 	};
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -58,7 +64,6 @@ export const MyDocuments = () => {
 						value={documentType}
 						onChange={(e) => setDocumentType(e.target.value)}
 					>
-						<option value="">All</option>
 						{DOCUMENT_TYPES.map((type) => (
 							<option key={type} value={type}>
 								{type}
@@ -69,7 +74,11 @@ export const MyDocuments = () => {
 			</div>
 
 			<div className="mb-5">
-				<Search onSearch={handleSearch} />
+				<Search
+					onSearch={handleSearch}
+					searchString={searchString}
+					setSearchString={setSearchString}
+				/>
 			</div>
 			<Table data={myDocuments} isMine={true} isLoading={isLoading} />
 		</div>
