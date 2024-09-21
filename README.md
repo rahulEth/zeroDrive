@@ -75,11 +75,11 @@ Also we are utilizing [https://docs.sign.global/]sign protocol if user wants to 
 
 ## Secure File Flow
 
-![architecture](./docs/zeroDrive-architecture.png)
+![architecture](./docs/zeroDrive-architecture.drawio.png)
 
 ## Access File Flow
 
-![architecture](./docs/zeroDrive-architecture1.png)
+![architecture](./docs/zeroDrive-architecture1.drawio.png)
 
 
 
