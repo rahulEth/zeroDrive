@@ -8,6 +8,7 @@ const {
     EvmChains,
     IndexService
 } = require('@ethsign/sp-sdk');
+require('dotenv').config();
 // Generate a function for making requests to the Sign Protocol Indexing Service
 async function makeAttestationRequest(endpoint, options) {
   const url = `https://testnet-rpc.sign.global/api/${endpoint}`;
@@ -33,7 +34,7 @@ async function queryAttestations(indexingValue) {
       params: {
         mode: "onchain", // Data storage location
         schemaId: "onchain_evm_84532_0x2cb", // Your full schema's ID
-        attester: "0xdaCD9AA32D83955a71Ab1FEC032BA5914FCceB5B", // Alice's address
+        attester: process.env.METAMASK_WALLET_ADDRESS, // Alice's address
         indexingValue: indexingValue, // Bob's address
       },
     });
