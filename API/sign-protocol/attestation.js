@@ -19,18 +19,6 @@ require('dotenv').config();
 
 
 async function createNotaryAttestation(fromAddr, fileName, fileType, fileData, toAddr, metadata, timestamp) {
-  let address = "0x4f5c387121663F747E2644D32de472eD884A2cb2"; // Alice's address. Will need Alice's account to send the tx.
-  // let schemaData 
-  // try{
-  //   schemaData = ethers.utils.defaultAbiCoder.encode(
-  //     ["string","string","string","string", "address","string","string"],
-  //     [username, password, appLink, type, signer, metadata, timestamp]
-  //   );
-    
-  // }catch(err){
-
-  // }
-  // Standard setup for the contract
     
   console.log('process.env.BASE_SEPOLIA----- ', process.env.BASE_SEPOLIA)
       // Add "0x" to the start of your private key if it's not already there
@@ -55,6 +43,7 @@ async function createNotaryAttestation(fromAddr, fileName, fileType, fileData, t
         recipients: [toAddr], // The signer's address.
     });
     console.log("transaction Hash:----- ", tx)
+    return tx;
   } catch (error) {
       throw error
   }

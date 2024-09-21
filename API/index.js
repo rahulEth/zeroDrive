@@ -8,6 +8,7 @@ const cors = require("cors");
 const crypto = require("crypto");
 const provider = require("./web3.js");
 const {getProof, setProof} = require('./utils/hedera.js');
+const {createNotaryAttestation} = require('./sign-protocol/attestation.js')
 
 // index.js
 
@@ -195,11 +196,11 @@ app.get("/api/getEncryptedDataByType", async (req, res) => {
 
 
 // Define a simple route
-app.post("/api/sendToAddress", (req, res) => {
+app.post("/api/sendToAddress", async (req, res) => {
   // Encrypt the message with the public key
   // const type = req.body.type || "personal";
-  fromAddr, fileName, fileType, fileData, toAddr, metadata, timestamp
-  if (!req.body.fromAddr || !req.body.fileName || !req.body.fileType) {
+  // fromAddr, fileName, fiType, fileData, toAddr, metadata, timestamp
+  if (!req.body.fromAddr || !req.body.fileName || !req.body.dataType) {
     return res
       .status(403)
       .send({ message: "fromAddr, fileName or fileType is missing" });
@@ -214,22 +215,22 @@ app.post("/api/sendToAddress", (req, res) => {
     });
   }
 
-  if (!req.body.chainType) {
-    return res.status(403).send({
-      message:
-        "chain type is missing",
-    });
-  }
+  const timestamp = new Date();
+  const metadata = 'NA';
 
-  uploadToIpfs(
-    res,
-    req.body.address,
-    req.body.fileName,
-    req.body.encryptedData,
-    req.body.dataType,
-    req.body.chainType
-  );
+  let result = await createNotaryAttestation(req.body.fromAddr, req.body.fileName, req.body.dataType, req.body.fileData, req.body.toAddr, metadata, timestamp)
+  result =JSON.parse(JSON.stringify(result))
+  result.txHash = `https://testnet-scan.sign.global/attestation/onchain_evm_84532_${result.attestationId}` 
+  return res.send(result); 
 });
+
+app.get("/api/receivedDocs", async (req, res) => {
+  // console.log("req.query.appLink ------ ", req.query.appLink, req.query.address)
+  if (!req.query.userAddr) {
+    return res.status(403).send({ message: "userAddr is missing" });
+  }
+});
+
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => {
