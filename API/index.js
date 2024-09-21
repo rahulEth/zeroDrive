@@ -139,20 +139,19 @@ async function storeToDB(
   console.log("document inserted Id ", result.insertedId.toString());
 }
 
-app.get("/api/getEncryptedData", async (req, res) => {
+app.get("/api/getEncryptedDataAll", async (req, res) => {
   // console.log("req.query.appLink ------ ", req.query.appLink, req.query.address)
-  if (!req.query.dataType || !req.query.address) {
-    return res.status(403).send({ message: "dataType or address is missing" });
+  if (!req.query.userAddr) {
+    return res.status(403).send({ message: "userAddr is missing" });
   }
   const db = await connectToDatabase();
   const collection = db.collection("zerodrive-collection");
   try {
-    const result = await collection.findOne({
-      appLink: req.query.appLink,
-      address: req.query.address,
-    });
+    const result = await collection.find({address: req.query.userAddr});
     if (result) {
-      return res.status(200).send(result);
+      const finalResult = await result.toArray();
+      JSON.stringify(finalResult, null, 2);
+      return res.status(200).send(finalResult);
     }
     return res.status(404).send({ message: "no matching credentials found" });
   } catch (err) {
@@ -162,21 +161,21 @@ app.get("/api/getEncryptedData", async (req, res) => {
 });
 
 app.get("/api/getEncryptedDataByType", async (req, res) => {
-  console.log("req.query.dataType ------ ", req.query.dataType, req.query.address)
-  if (!req.query.dataType || !req.query.address) {
-    return res.status(403).send({ message: "dataType or address is missing" });
+  console.log("req.query.dataType ------ ", req.query.dataType, req.query.userAddr)
+  if (!req.query.dataType || !req.query.userAddr) {
+    return res.status(403).send({ message: "dataType or userAddr is missing" });
   }
   const db = await connectToDatabase();
   const collection = db.collection("zerodrive-collection");
   let query = {};
   if(req.query.dataType.toLowerCase() == 'all'){
     query = {
-      address: req.query.address,
+      address: req.query.userAddr,
     }
   }else if(req.query.dataType == 'personal' || req.query.dataType == 'education' || req.query.dataType == 'identity' || req.query.dataType == 'health' || req.query.dataType == 'government'){
     query = {
       dataType: req.query.dataType,
-      address: req.query.address,
+      address: req.query.userAddr,
     }
   }else{
     return res.status(403).send({ message: "valid type are personal, education, identity, health, government" });
