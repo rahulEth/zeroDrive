@@ -20,7 +20,7 @@ export interface DocumentResponse {
 }
 
 export interface GetEncryptedDataResponse {
-  id: string;
+  _id: string;
   address: string;
   encryptedData: string;
   dataType: DocumentType;

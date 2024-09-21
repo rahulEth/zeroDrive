@@ -42,12 +42,7 @@ export const Dashboard = () => {
 
 	const handleSign = async (fileName: string) => {
 		const signatureHash = await signMessageAsync({ message: fileName });
-		// setFileName(fileName);
 		setSignatureHash(signatureHash);
-
-		// const decodedData = decodeBase64(base64EncodedData);
-		// const decryptedData = decryptData(decodedData, signatureHash);
-		// console.log("Decrypted data:", decryptedData);
 	};
 
 	const sendFile = async () => {
@@ -83,15 +78,11 @@ export const Dashboard = () => {
 	};
 
 	return (
-		<div className="flex flex-col h-full">
+		<div className="flex flex-col">
 			<h1 className="text-4xl font-bold">Welcome to ZeroDrive</h1>
-			<p className="text-lg text-primary-light mt-4 font-bold">
+			<p className="text-lg text-primary-light mb-4 font-bold">
 				This is a decentralized file storage application
 			</p>
-			<div className="flex gap-11">
-				<h2>Your data your control</h2>
-				<h5>Trustless and Non-Custodial security </h5>
-			</div>
 
 			<div className="mb-4">
 				<div className="text-xl font-bold mb-4">Load and save your file</div>
