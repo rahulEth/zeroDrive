@@ -47,7 +47,7 @@ const UploadComponent = ({
 				<input
 					type="file"
 					onChange={handleFileChange}
-					className="border border-dashed p-2 w-full h-[100px]"
+					className="border border-dashed p-2 w-full h-[100px] rounded-lg"
 				/>
 			)}
 

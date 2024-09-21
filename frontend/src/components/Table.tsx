@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { GetEncryptedDataResponse } from "../interfaces";
 import { formatDate } from "../utils/dateUtils";
-import { SignMessageBtn } from "./SignMessageBtn";
+import { SendFileBtn } from "./SendFileBtn";
 import { DetailsModal } from "./DetailsModal";
 
 export interface Document {
@@ -45,27 +45,27 @@ export const Table = ({
 			<table className="table-auto border border-gray-300 border-collapse rounded-lg">
 				<thead>
 					<tr>
-						<th className="px-4 py-2 border border-gray-300 rounded-lg">
+						<th className="px-4 py-2 border border-gray-300 rounded-lg text-white">
 							Name
 						</th>
-						<th className="px-4 py-2 border border-gray-300 rounded-lg">
+						<th className="px-4 py-2 border border-gray-300 rounded-lg text-white">
 							Type
 						</th>
 						{!isMine && (
-							<th className="px-4 py-2 border border-gray-300 rounded-lg">
+							<th className="px-4 py-2 border border-gray-300 rounded-lg text-white">
 								From
 							</th>
 						)}
 						{isMine && (
-							<th className="px-4 py-2 border border-gray-300 rounded-lg">
+							<th className="px-4 py-2 border border-gray-300 rounded-lg text-white">
 								Proof
 							</th>
 						)}
-						<th className="px-4 py-2 border border-gray-300 rounded-lg">
+						<th className="px-4 py-2 border border-gray-300 rounded-lg text-white">
 							Date
 						</th>
 						{isMine && (
-							<th className="px-4 py-2  border border-gray-300 rounded-lg">
+							<th className="px-4 py-2  border border-gray-300 rounded-lg text-white">
 								Notary Approval
 							</th>
 						)}
@@ -83,7 +83,7 @@ export const Table = ({
 							<tr key={item._id}>
 								{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 								<td
-									className="border cursor-pointer px-4 py-2 border-gray-300 rounded-lg text-center"
+									className="border cursor-pointer px-4 py-2 border-gray-300 rounded-lg text-center hover:text-white"
 									onClick={() => openDetailsModal(item._id)}
 								>
 									{item.fileName}
@@ -108,7 +108,13 @@ export const Table = ({
 								</td>
 								{isMine && (
 									<td className="border px-4 py-2 border-gray-300 rounded-lg text-center">
-										<SignMessageBtn />
+										<SendFileBtn
+											document={{
+												fileName: item.fileName,
+												dataType: item.dataType,
+												fileData: item.encryptedData,
+											}}
+										/>
 									</td>
 								)}
 							</tr>
