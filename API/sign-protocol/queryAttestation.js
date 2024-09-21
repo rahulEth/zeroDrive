@@ -1,6 +1,7 @@
 
 const axios = require("axios");
 const  { ethers } = require("ethers");
+const { decodeAbiParameters } = require("viem");
 const {
     SignProtocolClient,
     SpMode,
@@ -54,10 +55,13 @@ async function queryAttestations(indexingValue) {
       };
     }
     // Return all attestations that match our query.
-    const attestation = await findAttestation('', atresponse.data.rows.attestations)
-    console.log("attestation----------- ", attestation)
+    // console.log("response.data.rows------- ", response.data.rows)
+    // console.log("response.data.rows.attestations--------- ", response.data.rows.attestations)
+    // return
+    const attestation = await findAttestation('', response.data.rows)
+    return attestation;
   }
-const { decodeAbiParameters } = require("viem");
+
 
 
 
@@ -76,8 +80,7 @@ const { decodeAbiParameters } = require("viem");
 function findAttestation(message, attestations) {   //attestations: any[]
     // Iterate through the list of attestations
     let parsedData = [];
-    for (const att of attestations) {
-     console.log('-------att', att)   
+    for (const att of attestations) { 
       if (!att.data) continue;
   
       
@@ -117,7 +120,7 @@ function findAttestation(message, attestations) {   //attestations: any[]
       }
       
       // Return the correct attestation and its parsed data.
-      console.log("..........", parsedData?.contractDetails)
+      // console.log("..........", parsedData?.contractDetails)
     //   if(parsedData?.contractDetails === message) {
         // return { parsedData, attestation: att };
     //   }
@@ -127,5 +130,5 @@ function findAttestation(message, attestations) {   //attestations: any[]
     return parsedData;
 }
 
-module.exports ={makeAttestationRequest}
+module.exports ={queryAttestations}
 

@@ -9,6 +9,7 @@ const crypto = require("crypto");
 const provider = require("./web3.js");
 const {getProof, setProof} = require('./utils/hedera.js');
 const {createNotaryAttestation} = require('./sign-protocol/attestation.js')
+const {queryAttestations} = require('./sign-protocol/queryAttestation.js')
 
 // index.js
 
@@ -229,6 +230,10 @@ app.get("/api/receivedDocs", async (req, res) => {
   if (!req.query.userAddr) {
     return res.status(403).send({ message: "userAddr is missing" });
   }
+
+  const result = await queryAttestations(req.query.userAddr)
+
+  res.status(200).send(result)
 });
 
 
