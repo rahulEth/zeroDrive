@@ -4,14 +4,17 @@ const Moralis = require("moralis").default;
 const bodyParser = require('body-parser');
 // const { Provider, Wallet, types } = require('zksync-ethers');
 dotenv.config();
-const { connectToDatabase } = require("./db.js");
+const { connectToDatabase} = require("./db.js");
 const cors = require("cors");
 const crypto = require("crypto");
 const provider = require("./web3.js");
 const {getProof, setProof} = require('./utils/hedera.js');
 const {createNotaryAttestation} = require('./sign-protocol/attestation.js')
 const {queryAttestations} = require('./sign-protocol/queryAttestation.js')
-
+let db;
+connectToDatabase().then((result)=>{
+   db = result
+})
 // index.js
 
 const express = require("express");
@@ -127,7 +130,7 @@ async function storeToDB(
 ) {
   const resp = await setProof(address, ipfsHash[0].path);
   const txHash = `https://hashscan.io/testnet/transaction/${resp.transactionId}`
-  const db = await connectToDatabase();
+  // const db = await connectToDatabase();
   const collection = db.collection("zerodrive-collection");
   const result = await collection.insertOne({
     address,
@@ -147,7 +150,7 @@ app.get("/api/getEncryptedDataAll", async (req, res) => {
   if (!req.query.userAddr) {
     return res.status(403).send({ message: "userAddr is missing" });
   }
-  const db = await connectToDatabase();
+  // const db = await connectToDatabase();
   const collection = db.collection("zerodrive-collection");
   try {
     const result = await collection.find({address: req.query.userAddr});
@@ -168,7 +171,7 @@ app.get("/api/getEncryptedDataByType", async (req, res) => {
   if (!req.query.dataType || !req.query.userAddr) {
     return res.status(403).send({ message: "dataType or userAddr is missing" });
   }
-  const db = await connectToDatabase();
+  // const db = await connectToDatabase();
   const collection = db.collection("zerodrive-collection");
   let query = {};
   if(req.query.dataType.toLowerCase() == 'all'){
@@ -202,7 +205,7 @@ app.get("/api/getEncryptedDataByFileName", async (req, res) => {
   if (!req.query.fileName || !req.query.userAddr) {
     return res.status(403).send({ message: "fileName or userAddr is missing" });
   }
-  const db = await connectToDatabase();
+  // const db = await connectToDatabase();
   const collection = db.collection("zerodrive-collection");
   const  query = {
       fileName: req.query.fileName,
@@ -250,7 +253,7 @@ app.post("/api/sendToAddress", async (req, res) => {
   const signHash = `https://testnet-scan.sign.global/attestation/onchain_evm_84532_${result.attestationId}`
   result.signHash =  signHash;
 
-  const db = await connectToDatabase();
+  // const db = await connectToDatabase();
   const collection = db.collection("zerodrive-notary");
   collection.insertOne({
       fromAddr: req.body.fromAddr,
@@ -274,7 +277,7 @@ app.get("/api/receivedDocs", async (req, res) => {
   // const queryArray = result.map(({ fromAddr, fileName }) => ({ address: fromAddr, fileName }));
   // console.log("queryArray--------- ", queryArray)
   // return
-  const db = await connectToDatabase();
+  // const db = await connectToDatabase();
 
   try {
     const resp = await db.collection("zerodrive-notary").find({
