@@ -45,7 +45,9 @@ export const DetailsModal = ({
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
 			<div className="bg-white p-8 rounded-lg w-[500px]" ref={modalRef}>
-				<h2 className="text-2xl font-bold mb-2 text-primary-dark">Document details</h2>
+				<h2 className="text-2xl font-bold mb-2 text-primary-dark">
+					Document details
+				</h2>
 				<p className="text-lg">File name: {fileName}</p>
 
 				<div className="py-4 items-center">

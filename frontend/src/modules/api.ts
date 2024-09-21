@@ -17,7 +17,9 @@ export const getEncryptedDataByType = async (address: string, dataType: string):
 }
 
 // sign protocol
-export const sendDocumentToAddress = async (document: DocumentSentData) => {
+
+type DocumentWithoutIdAndDate = Omit<DocumentSentData, '_id' | 'date'>;
+export const sendDocumentToAddress = async (document: DocumentWithoutIdAndDate) => {
     return api.post('api/sendToAddress', document);
 }
 
@@ -29,6 +31,15 @@ export const getDocuments = async (address: string, documentType: string): Promi
   }
 
   return api.get(`api/documents?${params.toString()}`);
+}
+
+export const getReceivedDocs = async (address: string): Promise<GetDocumentResponse[]> => {
+    const params = new URLSearchParams();
+    params.append('userAddr', address);
+    params.append('dataType', "all");
+  
+
+    return api.get(`api/receivedDocs?${params.toString()}`);
 }
 
 export const api = {

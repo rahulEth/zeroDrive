@@ -1,5 +1,5 @@
 import { http, createConfig } from 'wagmi'
-import { mainnet, sepolia, baseSepolia, hederaTestnet } from 'wagmi/chains'
+import { mainnet, sepolia, baseSepolia, hederaTestnet, flowTestnet } from 'wagmi/chains'
 import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 
@@ -12,7 +12,7 @@ const metadata = {
   icons: ['https://assets.reown.com/reown-profile-pic.png']
 }
 
-const chains = [mainnet, sepolia, baseSepolia, hederaTestnet] as const
+const chains = [mainnet, sepolia, baseSepolia, hederaTestnet, flowTestnet] as const
 
 export const initWeb3Modal = () => {
   createWeb3Modal({
@@ -32,6 +32,9 @@ export const config = createConfig({
   transports: {
     [mainnet.id]: http(),
     [sepolia.id]: http(),
+    [baseSepolia.id]: http(),
+    [hederaTestnet.id]: http(),
+    [flowTestnet.id]: http(),
   },
 })
 
