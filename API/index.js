@@ -245,7 +245,7 @@ app.post("/api/sendToAddress", async (req, res) => {
   const timestamp = new Date();
   const metadata = 'NA';
 
-  let result = await createNotaryAttestation(req.body.fromAddr, req.body.fileName, req.body.dataType, req.body.fileData, req.body.toAddr, metadata, timestamp)
+  let result = await createNotaryAttestation(req.body.fromAddr, req.body.fileName, req.body.dataType, req.body.fileName, req.body.toAddr, metadata, timestamp)
   result =JSON.parse(JSON.stringify(result))
   const signHash = `https://testnet-scan.sign.global/attestation/onchain_evm_84532_${result.attestationId}`
   result.signHash =  signHash;
@@ -270,9 +270,28 @@ app.get("/api/receivedDocs", async (req, res) => {
     return res.status(403).send({ message: "userAddr is missing" });
   }
 
-  const result = await queryAttestations(req.query.userAddr)
+  // const result = await queryAttestations(req.query.userAddr)
+  // const queryArray = result.map(({ fromAddr, fileName }) => ({ address: fromAddr, fileName }));
+  // console.log("queryArray--------- ", queryArray)
+  // return
+  const db = await connectToDatabase();
 
-  res.status(200).send(result)
+  try {
+    const resp = await db.collection("zerodrive-notary").find({
+        toAddr: req.query.userAddr
+    })
+    if (resp) {
+      const finalResult = await resp.toArray();
+      JSON.stringify(finalResult, null, 2);
+      return res.status(200).send(finalResult);
+    }
+    return res.status(404).send({ message: "no matching credentials found" });
+  } catch (err) {
+    console.log("internal server err ", err);
+    return res.status(500).send({ message: "internal server error" });
+  }
+
+  res.status(200).send(resp)
 });
 
 
