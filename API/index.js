@@ -197,6 +197,30 @@ app.get("/api/getEncryptedDataByType", async (req, res) => {
   }
 });
 
+app.get("/api/getEncryptedDataByFileName", async (req, res) => {
+  console.log("req.query.dataType ------ ", req.query.fileName, req.query.userAddr)
+  if (!req.query.fileName || !req.query.userAddr) {
+    return res.status(403).send({ message: "fileName or userAddr is missing" });
+  }
+  const db = await connectToDatabase();
+  const collection = db.collection("zerodrive-collection");
+  const  query = {
+      fileName: req.query.fileName,
+      address: req.query.userAddr,
+    }
+  try {
+    const result = await collection.findOne(query);
+    if (result) {
+      return res.status(200).send(result);
+    }
+    return res.status(404).send({ message: "no matching file found" });
+  } catch (err) {
+    console.log("internal server err ", err);
+    return res.status(500).send({ message: "internal server error" });
+  }
+});
+
+
 
 // Define a simple route
 app.post("/api/sendToAddress", async (req, res) => {
