@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { type Document, Table } from "../components/Table";
 import { Search } from "../components/Search";
-import { getDocuments } from "../modules/api";
+import { getDocuments, getEncryptedDataByType } from "../modules/api";
 import { useAccount } from "wagmi";
 
 const DOCUMENT_TYPES = [
@@ -23,7 +23,7 @@ export const MyDocuments = () => {
 		},
 	]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [documentType, setDocumentType] = useState<string>("");
+	const [documentType, setDocumentType] = useState<string>("all");
 
 	const handleSearch = (search: string) => {
 		console.log(search);
@@ -34,7 +34,7 @@ export const MyDocuments = () => {
 		const fetchMyDocuments = async (address: string) => {
 			setIsLoading(true);
 			try {
-				const response = await getDocuments(address, documentType);
+				const response = await getEncryptedDataByType(address, documentType);
 				// const response = await fetch("http://localhost:3001/api/documents");
 				// const data = await response.json();
 				console.log(response);
@@ -53,8 +53,6 @@ export const MyDocuments = () => {
 	return (
 		<div className="flex flex-col h-full">
 			<h2 className="text-2xl font-bold">My Documents</h2>
-			<div className="text-lg my-5">This is a list of all your documents</div>
-
 			<div className="mb-5">
 				<div className="flex gap-4 items-center">
 					<label className="block" htmlFor="documentType">

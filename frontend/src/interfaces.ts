@@ -6,7 +6,7 @@ export interface DocumentData {
   address: string;
   fileName: string;
   encryptedData: string;
-  datatype: DocumentType;
+  dataType: DocumentType;
   chainType: string;
 }
 
@@ -17,6 +17,18 @@ export interface DocumentResponse {
   ipfsHash: { path: string }[];
   dataType: DocumentType;
   date: string;
+}
+
+export interface GetEncryptedDataResponse {
+  id: string;
+  address: string;
+  encryptedData: string;
+  dataType: DocumentType;
+  date: string;
+  fileName: string;
+  chainType: string;
+  ipfsHash:  { path: string }[];
+  txHash: string;
 }
 
 

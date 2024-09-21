@@ -12,23 +12,37 @@ import {
 import { sendDocument } from "../modules/api";
 import { documentTypes } from "../constants/ui";
 import type { DocumentType } from "../interfaces";
+import { SuccessModal } from "../components/SuccessModal";
+
+interface DocumentData {
+	fileName: string;
+	base64: string;
+}
 
 export const Dashboard = () => {
-	const [fileBase64, setFileBase64] = useState<string | null>(null);
-	const [fileName, setFileName] = useState<string>("");
-	const [documentType, setDocumentType] = useState<DocumentType | "">("");
 	const account = useAccount();
-	const [signatureHash, setSignatureHash] = useState<string | null>(null);
-
 	const { signMessageAsync, data, status } = useSignMessage();
+	const [documentHash, setDocumentHash] = useState<string>("");
 
-	const loadFile = (base64: string) => {
-		setFileBase64(base64);
+	const [documentData, setDocumentData] = useState<DocumentData | null>(null);
+	// const [fileBase64, setFileBase64] = useState<string | null>(null);
+	// const [fileName, setFileName] = useState<string>("");
+	const [documentType, setDocumentType] = useState<DocumentType | "">("");
+	const [signatureHash, setSignatureHash] = useState<string | null>(null);
+	const [isSuccessModalVisible, setIsSuccessModalVisible] =
+		useState<boolean>(false);
+	const [fileIsSending, setFileIsSending] = useState<boolean>(false);
+
+	const loadFile = (base64: string, fileName: string) => {
+		setDocumentData({
+			fileName,
+			base64,
+		});
 	};
 
 	const handleSign = async (fileName: string) => {
 		const signatureHash = await signMessageAsync({ message: fileName });
-		setFileName(fileName);
+		// setFileName(fileName);
 		setSignatureHash(signatureHash);
 
 		// const decodedData = decodeBase64(base64EncodedData);
@@ -37,33 +51,56 @@ export const Dashboard = () => {
 	};
 
 	const sendFile = async () => {
-		if (!signatureHash || !documentType || !fileBase64) return;
+		if (!signatureHash || !documentType || !documentData?.base64) return;
 
-		const encryptedData = encryptData(fileBase64, signatureHash); // data to encrypt, secret key
+		const encryptedData = encryptData(documentData.base64, signatureHash); // data to encrypt, secret key
 		const base64EncodedData = encodeBase64(encryptedData);
 		console.log("Encrypted and Base64 encoded data:", base64EncodedData);
-		sendDocument({
-			address: account?.address as string,
-			fileName,
-			encryptedData: base64EncodedData,
-			datatype: documentType,
-			chainType: "hedera",
-		});
+		setFileIsSending(true);
+		try {
+			const response = await sendDocument({
+				address: account?.address as string,
+				fileName: documentData.fileName,
+				encryptedData: base64EncodedData,
+				dataType: documentType,
+				chainType: "hedera",
+			});
+			console.log(response);
+			setDocumentHash(response.ipfsHash[0].path);
+			setIsSuccessModalVisible(true);
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setFileIsSending(false);
+		}
+	};
+
+	const onCloseSuccessModal = () => {
+		setIsSuccessModalVisible(false);
+		setDocumentData(null);
+		setDocumentType("");
+		setSignatureHash(null);
 	};
 
 	return (
 		<div className="flex flex-col h-full">
 			<h1 className="text-4xl font-bold">Welcome to ZeroDrive</h1>
-			<h2>Your data your control</h2>
-			<h5>Trustless and Non-Custodial security </h5>
-			<p className="text-lg mt-4">
+			<p className="text-lg text-primary-light mt-4 font-bold">
 				This is a decentralized file storage application
 			</p>
+			<div className="flex gap-11">
+				<h2>Your data your control</h2>
+				<h5>Trustless and Non-Custodial security </h5>
+			</div>
 
 			<div className="mb-4">
 				<div className="text-xl font-bold mb-4">Load and save your file</div>
-				<UploadComponent saveBase64={loadFile} onSign={handleSign} />
-				{fileBase64 && signatureHash && (
+				<UploadComponent
+					saveDocumentData={loadFile}
+					onSign={handleSign}
+					documentData={documentData}
+				/>
+				{documentData && signatureHash && (
 					<div className="mt-4">
 						<div className="text-l font-bold mb-4">2. Choose data type</div>
 						<div className="flex gap-4 items-center">
@@ -74,6 +111,7 @@ export const Dashboard = () => {
 									setDocumentType(e.target.value as DocumentType)
 								}
 							>
+								<option value="">Select document type</option>
 								{documentTypes.map((type) => (
 									<option key={type} value={type}>
 										{type.charAt(0).toUpperCase() + type.slice(1)}
@@ -83,11 +121,11 @@ export const Dashboard = () => {
 
 							<button
 								type="button"
-								className="btn-default py-2 px-4 rounded-lg"
+								className="btn-default py-2 px-4 rounded-lg w-[200px]"
 								onClick={sendFile}
 								disabled={!documentType}
 							>
-								Send file
+								{fileIsSending ? "Sending..." : "Send file"}
 							</button>
 						</div>
 					</div>
@@ -95,6 +133,10 @@ export const Dashboard = () => {
 			</div>
 
 			<MyDocuments />
+
+			{isSuccessModalVisible && (
+				<SuccessModal close={onCloseSuccessModal} linkProof={documentHash} />
+			)}
 		</div>
 	);
 };

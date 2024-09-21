@@ -1,15 +1,24 @@
-import type { DocumentData, DocumentSentData, GetDocumentResponse } from "../../interfaces";
+import type { DocumentData, DocumentResponse, DocumentSentData, GetDocumentResponse, GetEncryptedDataResponse } from "../interfaces";
 
 const BASE_URL = 'http://localhost:3000';
 
-// sign protocol
-export const sendDocumentToAddress = async (document: DocumentSentData) => {
-  return api.post('api/sendToAddress', document);
-}
 
 // hedera
-export const sendDocument = async (document: DocumentData) => {
+export const sendDocument = async (document: DocumentData): Promise<DocumentResponse> => {
     return api.post('api/saveConfidential', document)
+}
+
+export const getEncryptedDataByType = async (address: string, dataType: string): Promise<GetEncryptedDataResponse[]>=> {
+    const params = new URLSearchParams();
+    params.append('userAddr', address);
+    params.append('dataType', dataType);
+    
+    return api.get(`api/getEncryptedDataByType?${params.toString()}`);
+}
+
+// sign protocol
+export const sendDocumentToAddress = async (document: DocumentSentData) => {
+    return api.post('api/sendToAddress', document);
 }
 
 export const getDocuments = async (address: string, documentType: string): Promise<GetDocumentResponse[]> => {

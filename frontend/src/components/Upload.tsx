@@ -1,14 +1,12 @@
-import { useState } from "react";
-
 const UploadComponent = ({
-	saveBase64,
+	documentData,
+	saveDocumentData,
 	onSign,
 }: {
-	saveBase64: (base64: string) => void;
+	documentData: { base64: string; fileName: string } | null;
+	saveDocumentData: (base64: string, fileName: string) => void;
 	onSign: (fileName: string) => void;
 }) => {
-	const [fileName, setFileName] = useState("");
-
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const handleFileChange = (e: any) => {
 		const file = e.target.files[0];
@@ -18,8 +16,7 @@ const UploadComponent = ({
 			reader.readAsDataURL(file);
 
 			reader.onloadend = () => {
-				setFileName(file.name);
-				saveBase64(reader.result as string);
+				saveDocumentData(reader.result as string, file.name);
 			};
 
 			reader.onerror = (error) => {
@@ -33,13 +30,15 @@ const UploadComponent = ({
 			<h2 className="text-l font-semibold mb-4">1. Upload a File</h2>
 
 			{/* Display file name */}
-			{fileName ? (
+			{documentData?.fileName ? (
 				<div className="flex gap-5 items-center">
-					<p className="text-gray-600">Uploaded File: {fileName}</p>
+					<p className="text-gray-600">
+						Uploaded File: {documentData.fileName}
+					</p>
 					<button
 						type="button"
-						className="btn-default py-2 px-4 rounded-lg"
-						onClick={() => onSign(fileName)}
+						className="btn-default py-2 px-4 rounded-lg w-[200px]"
+						onClick={() => onSign(documentData.fileName)}
 					>
 						Sign file
 					</button>
