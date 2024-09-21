@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { useAccount, useSignMessage } from "wagmi";
 
-export const SignMessageBtn = () => {
+export const SignMessageBtn = memo(() => {
 	const { signMessage, data, status } = useSignMessage();
 	const account = useAccount();
 
@@ -18,4 +19,4 @@ export const SignMessageBtn = () => {
 			{status === "success" ? "Signed" : "Sign"}
 		</button>
 	);
-};
+});

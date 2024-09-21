@@ -1,12 +1,16 @@
-import type { DocumentData, GetDocumentResponse } from "../../interfaces";
+import type { DocumentData, DocumentSentData, GetDocumentResponse } from "../../interfaces";
 
 const BASE_URL = 'http://localhost:3000';
 
-
-export const sendDocument = async (document: DocumentData) => {
+// sign protocol
+export const sendDocumentToAddress = async (document: DocumentSentData) => {
   return api.post('api/sendToAddress', document);
 }
 
+// hedera
+export const sendDocument = async (document: DocumentData) => {
+    return api.post('api/saveConfidential', document)
+}
 
 export const getDocuments = async (address: string, documentType: string): Promise<GetDocumentResponse[]> => {
   const params = new URLSearchParams();
