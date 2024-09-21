@@ -10,7 +10,8 @@ export interface Document {
 export const Table = ({
 	data,
 	isMine,
-}: { data: Document[]; isMine?: boolean }) => {
+	isLoading,
+}: { data: Document[]; isLoading: boolean; isMine?: boolean }) => {
 	return (
 		<table className="table-auto border border-gray-300 border-collapse rounded-lg">
 			<thead>
@@ -36,6 +37,13 @@ export const Table = ({
 				</tr>
 			</thead>
 			<tbody>
+				{isLoading && (
+					<tr>
+						<td className="border px-4 py-2 border-gray-300" colSpan={5}>
+							Loading...
+						</td>
+					</tr>
+				)}
 				{data.length ? (
 					data.map((item, index) => (
 						<tr key={item.date}>

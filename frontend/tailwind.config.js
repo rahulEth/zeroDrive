@@ -71,6 +71,11 @@ export default {
             backgroundColor: 'var(--color-primary)',  // Hover background (primary color)
             color: 'var(--color-accent)',             // Hover text (accent color)
           },
+          '&:disabled': {
+            backgroundColor: 'var(--color-gray-500)', // Disabled background (gray)
+            color: 'var(--color-background)',         // Disabled text (background)
+            cursor: 'not-allowed',
+          }
         },
         '.btn-primary': {
           backgroundColor: 'var(--color-primary)',    // Primary button background
