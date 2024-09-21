@@ -3,6 +3,7 @@ import { type Document, Table } from "../components/Table";
 import { Search } from "../components/Search";
 import { getDocuments, getEncryptedDataByType } from "../modules/api";
 import { useAccount } from "wagmi";
+import { GetEncryptedDataResponse } from "../interfaces";
 
 const DOCUMENT_TYPES = [
 	"personal",
@@ -14,14 +15,9 @@ const DOCUMENT_TYPES = [
 
 export const MyDocuments = () => {
 	const account = useAccount();
-	const [myDocuments, setMyDocuments] = useState<Document[]>([
-		{
-			type: "personal",
-			name: "John Doe",
-			date: "2021-09-01",
-			proof: "https://www.google.com",
-		},
-	]);
+	const [myDocuments, setMyDocuments] = useState<GetEncryptedDataResponse[]>(
+		[],
+	);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [documentType, setDocumentType] = useState<string>("all");
 
@@ -35,10 +31,7 @@ export const MyDocuments = () => {
 			setIsLoading(true);
 			try {
 				const response = await getEncryptedDataByType(address, documentType);
-				// const response = await fetch("http://localhost:3001/api/documents");
-				// const data = await response.json();
-				console.log(response);
-				// setMyDocuments(data)
+				setMyDocuments(response);
 			} catch (error) {
 				console.error(error);
 			} finally {

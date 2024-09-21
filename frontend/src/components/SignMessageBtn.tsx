@@ -16,7 +16,7 @@ export const SignMessageBtn = memo(() => {
 			}
 			disabled={account.status !== "connected"}
 		>
-			{status === "success" ? "Signed" : "Sign"}
+			{status === "success" ? "Sent" : "Send"}
 		</button>
 	);
 });
