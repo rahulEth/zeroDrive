@@ -247,7 +247,20 @@ app.post("/api/sendToAddress", async (req, res) => {
 
   let result = await createNotaryAttestation(req.body.fromAddr, req.body.fileName, req.body.dataType, req.body.fileData, req.body.toAddr, metadata, timestamp)
   result =JSON.parse(JSON.stringify(result))
-  result.txHash = `https://testnet-scan.sign.global/attestation/onchain_evm_84532_${result.attestationId}` 
+  const signHash = `https://testnet-scan.sign.global/attestation/onchain_evm_84532_${result.attestationId}`
+  result.signHash =  signHash;
+
+  const db = await connectToDatabase();
+  const collection = db.collection("zerodrive-notary");
+  collection.insertOne({
+      fromAddr: req.body.fromAddr,
+      toAddr: req.body.toAddr,
+      fileName: req.body.fileName,
+      fileData: req.body.fileData,
+      dataType: req.body.dataType,
+      signHash: req.body.signHash,
+      date: timestamp
+    });
   return res.send(result); 
 });
 
