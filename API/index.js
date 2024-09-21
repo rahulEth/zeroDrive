@@ -1,6 +1,7 @@
 const fs = require("fs");
 const dotenv = require("dotenv");
 const Moralis = require("moralis").default;
+const bodyParser = require('body-parser');
 // const { Provider, Wallet, types } = require('zksync-ethers');
 dotenv.config();
 const { connectToDatabase } = require("./db.js");
@@ -15,6 +16,8 @@ const {queryAttestations} = require('./sign-protocol/queryAttestation.js')
 
 const express = require("express");
 const app = express();
+app.use(bodyParser.json({ limit: '50mb' })); // Set limit to 50MB
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 const CryptoJS = require("crypto-js");
 const corsOptions = require("./config/corsOptions.js");
 // Use CORS middleware
