@@ -19,6 +19,7 @@ export const MyDocuments = () => {
 			proof: "https://www.google.com",
 		},
 	]);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [documentType, setDocumentType] = useState<string>("");
 
 	const handleSearch = (search: string) => {
@@ -27,11 +28,19 @@ export const MyDocuments = () => {
 
 	useEffect(() => {
 		const fetchMyDocuments = async () => {
-			const response = await fetch("http://localhost:3001/api/documents");
-			const data = await response.json();
-			setMyDocuments(data);
+			setIsLoading(true);
+			try {
+				// const response = await fetch("http://localhost:3001/api/documents");
+				// const data = await response.json();
+				setTimeout(() => {}, 5000);
+				// setMyDocuments(data);
+			} catch (error) {
+				console.error(error);
+			} finally {
+				setIsLoading(false);
+			}
 		};
-		fetchMyDocuments;
+		fetchMyDocuments();
 	}, []);
 
 	return (
@@ -64,7 +73,7 @@ export const MyDocuments = () => {
 			<div className="mb-5">
 				<Search onSearch={handleSearch} />
 			</div>
-			<Table data={myDocuments} isMine={true} />
+			<Table data={myDocuments} isMine={true} isLoading={isLoading} />
 		</div>
 	);
 };

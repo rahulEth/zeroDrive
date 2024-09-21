@@ -2,8 +2,10 @@ import { useState } from "react";
 
 const UploadComponent = ({
 	saveBase64,
+	onSign,
 }: {
 	saveBase64: (base64: string) => void;
+	onSign: (fileName: string) => void;
 }) => {
 	const [fileName, setFileName] = useState("");
 
@@ -37,7 +39,16 @@ const UploadComponent = ({
 
 			{/* Display file name */}
 			{fileName && (
-				<p className="mt-4 text-gray-600">Uploaded File: {fileName}</p>
+				<div className="mt-4 flex gap-5 items-center">
+					<p className="text-gray-600">Uploaded File: {fileName}</p>
+					<button
+						type="button"
+						className="btn-default py-2 px-4 rounded-lg"
+						onClick={() => onSign(fileName)}
+					>
+						Submit
+					</button>
+				</div>
 			)}
 
 			{/* Display Base64 output */}

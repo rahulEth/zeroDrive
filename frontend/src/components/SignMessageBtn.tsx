@@ -1,14 +1,21 @@
-import { useSignMessage } from "wagmi";
+import { useAccount, useSignMessage } from "wagmi";
 
 export const SignMessageBtn = () => {
-	const { signMessage } = useSignMessage();
+	const { signMessage, data, status } = useSignMessage();
+	const account = useAccount();
+
+	console.log(data);
 
 	return (
 		<button
 			type="button"
-			onClick={() => signMessage({ message: "hello world" })}
+			className="btn-default py-2 px-4 rounded-lg"
+			onClick={() =>
+				status === "idle" ? signMessage({ message: "hello world" }) : null
+			}
+			disabled={account.status !== "connected"}
 		>
-			Sign
+			{status === "success" ? "Signed" : "Sign"}
 		</button>
 	);
 };
