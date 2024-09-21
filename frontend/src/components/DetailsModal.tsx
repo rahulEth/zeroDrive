@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useSignMessage } from "wagmi";
 import { decodeBase64, decryptData } from "../utils/aes";
-import { PDFDownloader } from "./PdfDownloader";
 import { IconCheck } from "./Icons";
+import useClickOutside from "../hooks/useClickOutside";
+import { PDFDownloader } from "./PDFDownloader";
 
 export const DetailsModal = ({
 	close,
@@ -15,6 +16,8 @@ export const DetailsModal = ({
 }) => {
 	const { signMessageAsync, data, status } = useSignMessage();
 	const [signatureHash, setSignatureHash] = useState<string | null>(null);
+	const modalRef = useRef<HTMLDivElement>(null);
+	useClickOutside(modalRef, () => close());
 
 	const handleSign = async () => {
 		const signatureHash = await signMessageAsync({ message: fileName });
@@ -40,9 +43,9 @@ export const DetailsModal = ({
 	}, [signatureHash]);
 
 	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-			<div className="bg-white p-8 rounded-lg w-[500px]">
-				<h2 className="text-2xl font-bold mb-2">Document details</h2>
+		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+			<div className="bg-white p-8 rounded-lg w-[500px]" ref={modalRef}>
+				<h2 className="text-2xl font-bold mb-2 text-primary-dark">Document details</h2>
 				<p className="text-lg">File name: {fileName}</p>
 
 				<div className="py-4 items-center">
