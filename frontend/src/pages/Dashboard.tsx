@@ -22,11 +22,9 @@ interface DocumentData {
 export const Dashboard = () => {
 	const account = useAccount();
 	const { signMessageAsync, data, status } = useSignMessage();
-	const [documentHash, setDocumentHash] = useState<string>("");
 
+	const [documentHash, setDocumentHash] = useState<string>("");
 	const [documentData, setDocumentData] = useState<DocumentData | null>(null);
-	// const [fileBase64, setFileBase64] = useState<string | null>(null);
-	// const [fileName, setFileName] = useState<string>("");
 	const [documentType, setDocumentType] = useState<DocumentType | "">("");
 	const [signatureHash, setSignatureHash] = useState<string | null>(null);
 	const [isSuccessModalVisible, setIsSuccessModalVisible] =
