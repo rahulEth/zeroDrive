@@ -45,6 +45,8 @@ server would start on localhost:3000
 ```
 cd frontend
 
+copy .env.example to .env 
+
 npm install
 
 npm run build
@@ -63,12 +65,12 @@ Ta-da You are good to go and explore zeroDrive dApp!
 ![top](./docs/mydocs.webp)
 
 
-![top](./docs/get-creds.png)
+![top](./docs/receive-docs.webp)
 
 
 ## Description
 
-zeroDrive is a web based app designed to store and access users' Web2 confidential data in a trustless and non-custodial way. When users secure their files, zeroDrive prompts them to provide their [https://metamask.io](metamask) or [https://docs.reown.com/appkit/overview](walletconnect) signature to encrypt and store the file data. We issue a proof of security on the Hedera blockchain, allowing users to verify and ensure the safety of their data. No one other than the user can view or access the file data, as everything is encrypted by user's MetaMask/WalletConnect wallet signature.
+zeroDrive is a web based app designed to store and access users' Web2 confidential data in a trustless and non-custodial way. When users secure their files, zeroDrive prompts them to provide their [https://metamask.io] (metamask) or [https://docs.reown.com/appkit/overview] (walletconnect) signature to encrypt and store the file data. We issue a proof of security on the Hedera blockchain, allowing users to verify and ensure the safety of their data. No one other than the user can view or access the file data, as everything is encrypted by user's MetaMask/WalletConnect wallet signature.
 
 Also we are utilizing [https://docs.sign.global](sign protocol) if user wants to notarize and transfer the file to other user. first user will authenticate himself with metamask/walletconnect and zeroDrive will act as notary on user behalf.
 
@@ -81,7 +83,9 @@ Also we are utilizing [https://docs.sign.global](sign protocol) if user wants to
 
 ![architecture](./docs/zeroDrive-architecture1.drawio.png)
 
+## sign protocol flow
 
+![architecture](./docs/sign-protocol.drawio.png)
 
 ## Deployed Contract for Trsutless-Pass dapp on Hedera Blockchain
 
