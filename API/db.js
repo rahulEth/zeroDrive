@@ -1,5 +1,8 @@
 const {MongoClient} = require('mongodb');
 require('dotenv').config()
+
+let db;
+
 // Replace the following with your MongoDB connection string.
 // 49.43.169.1)
 const uri = process.env.DB_URL;
@@ -14,6 +17,7 @@ const options = {
 
 // Function to connect to the database
 async function connectToDatabase() {
+  if (db) return db;  // Reuse the existing connection
   const client = new MongoClient(uri, options);
   try {
     // Connect to the MongoDB cluster
