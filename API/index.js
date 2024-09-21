@@ -258,7 +258,7 @@ app.post("/api/sendToAddress", async (req, res) => {
       fileName: req.body.fileName,
       fileData: req.body.fileData,
       dataType: req.body.dataType,
-      signHash: req.body.signHash,
+      signHash: signHash,
       date: timestamp
     });
   return res.send(result); 
