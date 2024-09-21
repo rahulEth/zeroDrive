@@ -63,7 +63,7 @@ Ta-da You are good to go and explore zeroDrive dApp!
 ![top](./docs/mydocs.webp)
 
 
-![top](./docs/get-creds.png)
+![top](./docs/receive-docs.webp)
 
 
 ## Description
@@ -81,7 +81,9 @@ Also we are utilizing [https://docs.sign.global](sign protocol) if user wants to
 
 ![architecture](./docs/zeroDrive-architecture1.drawio.png)
 
+## sign protocol flow
 
+![architecture](./docs/sign-protocol.drawio.png)
 
 ## Deployed Contract for Trsutless-Pass dapp on Hedera Blockchain
 
