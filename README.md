@@ -1,3 +1,6 @@
+![Logo](docs/zeroDrive.svg)
+
+
 # About
 
 A never-before-seen Web2 drive called zeroDrive. Store and access your confidential data in purely non-custodial and trustless way.
