@@ -12,6 +12,7 @@ export default {
           DEFAULT: 'var(--color-primary)',             // #186BE8
           dark: 'var(--primary-dark)',                 // #042352
           light: 'var(--color-primary-light)',         // #224E8F
+          transparent: 'rgba(24, 107, 232, 0.2)'
         },
         // secondary: 'var(--color-secondary)',          
         text: 'var(--color-gray-400)',                  // #93AFB6            
@@ -43,6 +44,11 @@ export default {
         'h4': ['1.25rem', { lineHeight: '1.75rem' }], // 20px
         'h5': ['1rem', { lineHeight: '1.5rem' }], // 16px
         'h6': ['0.875rem', { lineHeight: '1.25rem' }], // 14px
+      },
+      fontFamily: {
+        sans: ['Raleway', 'sans-serif'],
+        serif: ['Merriweather', 'serif'],
+        mono: ['Fira Code', 'monospace'],
       },
       screens: {
         xl: { max: '1149px' },
@@ -92,6 +98,12 @@ export default {
             backgroundColor: 'var(--color-gray-700)', // Darker background on hover
             color: 'var(--color-background)',         // Ensure text remains visible
           },
+        },
+        'select': {
+          backgroundColor: 'var(--color-background)',
+        },
+        'input': {
+          backgroundColor: 'var(--color-background)',
         },
       });
     },

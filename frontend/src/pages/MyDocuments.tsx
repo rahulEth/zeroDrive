@@ -14,7 +14,7 @@ const DOCUMENT_TYPES = [
 	"all",
 ];
 
-export const MyDocuments = () => {
+export const MyDocuments = ({ reloadData }: { reloadData: boolean }) => {
 	const [searchString, setSearchString] = useState("");
 	const account = useAccount();
 	const [myDocuments, setMyDocuments] = useState<GetEncryptedDataResponse[]>(
@@ -47,11 +47,11 @@ export const MyDocuments = () => {
 		if (account) {
 			fetchMyDocuments(account.address as string);
 		}
-	}, [account.address, documentType]);
+	}, [account.address, documentType, reloadData]);
 
 	return (
-		<div className="flex flex-col h-full">
-			<h2 className="text-2xl font-bold">My Documents</h2>
+		<div className="flex flex-col">
+			<h2 className="text-2xl font-bold text-white">My Documents</h2>
 			<div className="mb-5">
 				<div className="flex gap-4 items-center">
 					<label className="block" htmlFor="documentType">

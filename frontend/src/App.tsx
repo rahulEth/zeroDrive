@@ -12,7 +12,7 @@ function App() {
 				style={{ maxHeight: "calc(100vh - 73px)" }}
 			>
 				<Sidebar />
-				<main className="flex-1 bg-white p-8 max-h-[100vh] overflow-auto p-b-[100px]">
+				<main className="flex-1 p-8 max-h-[100vh] overflow-auto p-b-[100px]">
 					<Routes>
 						{ROUTES.map((route) => (
 							<Route

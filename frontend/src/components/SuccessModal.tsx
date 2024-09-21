@@ -1,3 +1,6 @@
+import { useRef } from "react";
+import useClickOutside from "../hooks/useClickOutside";
+
 export const SuccessModal = ({
 	close,
 	linkProof,
@@ -5,10 +8,13 @@ export const SuccessModal = ({
 	close: () => void;
 	linkProof: string;
 }) => {
+	const modalRef = useRef<HTMLDivElement>(null);
+	useClickOutside(modalRef, () => close());
+
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-			<div className="bg-white p-8 rounded-lg">
-				<h2 className="text-2xl font-bold">Success</h2>
+			<div className="bg-white p-8 rounded-lg" ref={modalRef}>
+				<h2 className="text-2xl font-bold text-primary-dark">Success</h2>
 				<p className="text-lg">Your file has been successfully uploaded</p>
 
 				<div className="mt-4 border-b-2 py-4">
