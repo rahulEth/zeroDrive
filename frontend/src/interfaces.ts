@@ -35,11 +35,14 @@ export interface GetEncryptedDataResponse {
 // SIGN PROTOCOL
 
 export interface DocumentSentData { 
+  _id: string; //id of the document
   fromAddr: string; //owner of the document
   fileName: string; //name of the document
   dataType: string; //type of the document
   fileData: string; //data of the document
   toAddr: string; //receiver of the document
+  date: string; //date of the document
+  
 }
 
 export interface PostDocumentToResponse {

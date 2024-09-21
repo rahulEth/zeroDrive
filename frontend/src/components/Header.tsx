@@ -22,9 +22,9 @@ const Header = () => {
 	return (
 		<header className="w-ful border-b border-gray-600 p-4 flex justify-between items-center">
 			<div className="flex items-center">
-				<div className="flex items-center justify-center text-center text-accent font-bold">
+				<div className="flex items-center justify-center text-center text-accent font-bold text-xl">
 					<span>Zero</span>
-					<span>Drive</span>
+					<span className="bg-primary">Drive</span>
 				</div>
 			</div>
 

@@ -77,13 +77,13 @@ export const Dashboard = () => {
 
 	return (
 		<div className="flex flex-col">
-			<h1 className="text-4xl font-bold text-white">Welcome to ZeroDrive</h1>
+			<h1 className="text-4xl font-bold dark:text-white">Welcome to ZeroDrive</h1>
 			<p className="text-lg text-primary-light mb-4 font-bold">
 				This is a decentralized file storage application
 			</p>
 
 			<div className="mb-4">
-				<div className="text-xl font-bold mb-4 text-white">Load and save your file</div>
+				<div className="text-xl font-bold mb-4 dark:text-white">Load and save your file</div>
 				<UploadComponent
 					saveDocumentData={loadFile}
 					onSign={handleSign}

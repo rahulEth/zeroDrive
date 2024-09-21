@@ -3,7 +3,7 @@ import { ROUTES } from "../constants/routes";
 
 export const Sidebar = () => {
 	return (
-		<aside className="w-64 bg-primary-transparent text-white flex flex-col">
+		<aside className="w-64 dark:bg-primary-transparent bg-primary text-white flex flex-col">
 			<nav className="flex-1 px-4 py-4 space-y-4">
 				<h2 className="text-accent font-bold">Your data - your control</h2>
 				<h5 className="text-gray-300">
