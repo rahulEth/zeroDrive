@@ -70,16 +70,16 @@ Ta-da You are good to go and explore zeroDrive dApp!
 
 zeroDrive is a web based app designed to store and access users' Web2 confidential data in a trustless and non-custodial way. When users secure their files, zeroDrive prompts them to provide their metamask/walletconnect signature to encrypt and store the file data. We issue a proof of security on the Hedera blockchain, allowing users to verify and ensure the safety of their data. No one other than the user can view or access the file data, as everything is encrypted by user's MetaMask/WalletConnect wallet signature.
 
-Also we are utilizing [https://docs.sign.global/]sign protocol if user wants to notarize and transfer the file to other user. first user will authenticate himself with metamask/walletconnect and zeroDrive will act as notary on user behalf.
+Also we are utilizing [https://docs.sign.global/](sign protocol) if user wants to notarize and transfer the file to other user. first user will authenticate himself with metamask/walletconnect and zeroDrive will act as notary on user behalf.
 
 
 ## Secure File Flow
 
-![architecture](./docs/zeroDrive-architecture.png)
+![architecture](./docs/zeroDrive-architecture.drawio.png)
 
 ## Access File Flow
 
-![architecture](./docs/zeroDrive-architecture1.png)
+![architecture](./docs/zeroDrive-architecture1.drawio.png)
 
 
 
