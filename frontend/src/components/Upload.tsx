@@ -29,26 +29,27 @@ const UploadComponent = ({
 	};
 
 	return (
-		<div className="mt-4 p-y-4 w-full">
-			<h2 className="text-xl font-semibold mb-4">Upload a File</h2>
-			<input
-				type="file"
-				onChange={handleFileChange}
-				className="border border-dashed p-2 w-full h-[100px]"
-			/>
+		<div className="p-y-4 w-full">
+			<h2 className="text-l font-semibold mb-4">1. Upload a File</h2>
 
 			{/* Display file name */}
-			{fileName && (
-				<div className="mt-4 flex gap-5 items-center">
+			{fileName ? (
+				<div className="flex gap-5 items-center">
 					<p className="text-gray-600">Uploaded File: {fileName}</p>
 					<button
 						type="button"
 						className="btn-default py-2 px-4 rounded-lg"
 						onClick={() => onSign(fileName)}
 					>
-						Submit
+						Sign file
 					</button>
 				</div>
+			) : (
+				<input
+					type="file"
+					onChange={handleFileChange}
+					className="border border-dashed p-2 w-full h-[100px]"
+				/>
 			)}
 
 			{/* Display Base64 output */}

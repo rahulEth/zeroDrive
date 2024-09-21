@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { type Document, Table } from "../components/Table";
 import { Search } from "../components/Search";
+import { getDocuments } from "../modules/api";
+import { useAccount } from "wagmi";
 
 const DOCUMENT_TYPES = [
 	"personal",
@@ -11,6 +13,7 @@ const DOCUMENT_TYPES = [
 ];
 
 export const MyDocuments = () => {
+	const account = useAccount();
 	const [myDocuments, setMyDocuments] = useState<Document[]>([
 		{
 			type: "personal",
@@ -26,22 +29,26 @@ export const MyDocuments = () => {
 		console.log(search);
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		const fetchMyDocuments = async () => {
+		const fetchMyDocuments = async (address: string) => {
 			setIsLoading(true);
 			try {
+				const response = await getDocuments(address, documentType);
 				// const response = await fetch("http://localhost:3001/api/documents");
 				// const data = await response.json();
-				setTimeout(() => {}, 5000);
-				// setMyDocuments(data);
+				console.log(response);
+				// setMyDocuments(data)
 			} catch (error) {
 				console.error(error);
 			} finally {
 				setIsLoading(false);
 			}
 		};
-		fetchMyDocuments();
-	}, []);
+		if (account) {
+			fetchMyDocuments(account.address as string);
+		}
+	}, [account.address, documentType]);
 
 	return (
 		<div className="flex flex-col h-full">
