@@ -3,7 +3,7 @@
 
 # About
 
-A never-before-seen Web2 drive called zeroDrive. Store and access your confidential data in purely non-custodial and trustless way.
+A never-before-seen Web2 drive called zeroDrive. Store and Access your confidential data in purely non-custodial and trustless way.
 
 ## Getting Started on local 
 
