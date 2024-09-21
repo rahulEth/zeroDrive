@@ -52,6 +52,8 @@
   --color-danger: #D65025;
   --color-info: #1BAAB4;
 
+  /* --color-text: #CDD8DA; */
+
 }
 
 @media (prefers-color-scheme: light) {
