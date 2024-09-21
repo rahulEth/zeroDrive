@@ -11,8 +11,8 @@ export const SuccessModal = ({
 				<h2 className="text-2xl font-bold">Success</h2>
 				<p className="text-lg">Your file has been successfully uploaded</p>
 
-				<div className="mt-4">
-					<h3 className="font-bold">Transaction Hash:</h3>
+				<div className="mt-4 border-b-2 py-4">
+					<h3 className="font-bold">InterPlanetary File System link:</h3>
 					<a href={linkProof} target="_black">
 						{linkProof}
 					</a>
