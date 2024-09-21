@@ -34,6 +34,5 @@ async function connectToDatabase() {
     throw err;
   }
 }
-
 // Export the connection function
 module.exports= {connectToDatabase };
