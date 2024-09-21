@@ -91,15 +91,6 @@ async function uploadToIpfs(
   });
   console.log(resp.result);
   const date = new Date();
-  return res.status(200).send({
-    address,
-    fileName,
-    chainType,
-    ipfsHash: resp.result,
-    dataType,
-    chainType,
-    date
-  });
   storeToDB(
     address,
     resp.result,
@@ -109,6 +100,15 @@ async function uploadToIpfs(
     chainType,
     date
   );  
+  return res.status(200).send({
+    address,
+    fileName,
+    chainType,
+    ipfsHash: resp.result,
+    dataType,
+    chainType,
+    date
+  });
 }
 
 async function storeToDB(
@@ -193,6 +193,43 @@ app.get("/api/getEncryptedDataByType", async (req, res) => {
   }
 });
 
+
+// Define a simple route
+app.post("/api/sendToAddress", (req, res) => {
+  // Encrypt the message with the public key
+  // const type = req.body.type || "personal";
+  fromAddr, fileName, fileType, fileData, toAddr, metadata, timestamp
+  if (!req.body.fromAddr || !req.body.fileName || !req.body.fileType) {
+    return res
+      .status(403)
+      .send({ message: "fromAddr, fileName or fileType is missing" });
+  }
+
+  if (  
+    !req.body.fileData || !req.body.toAddr
+  ) {
+    return res.status(403).send({
+      message:
+        "fileData or toAddr is missing",
+    });
+  }
+
+  if (!req.body.chainType) {
+    return res.status(403).send({
+      message:
+        "chain type is missing",
+    });
+  }
+
+  uploadToIpfs(
+    res,
+    req.body.address,
+    req.body.fileName,
+    req.body.encryptedData,
+    req.body.dataType,
+    req.body.chainType
+  );
+});
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => {
