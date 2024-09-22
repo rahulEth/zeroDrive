@@ -78,8 +78,8 @@ export const Dashboard = () => {
 	return (
 		<div className="flex flex-col">
 			<h1 className="text-4xl font-bold dark:text-white">Welcome to ZeroDrive</h1>
-			<p className="text-lg text-primary-light mb-4 font-bold">
-				This is a decentralized file storage application
+			<p className="text-lg text-accent mb-4 font-bold">
+			A never-before-seen Web3 drive. <br/> Store and Access your confidential data in purely non-custodial and trustless way.
 			</p>
 
 			<div className="mb-4">
